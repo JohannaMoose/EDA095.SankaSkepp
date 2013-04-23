@@ -1,0 +1,5 @@
+Client starta a connection with the server
+User types a message in the chat gui 
+c. That message is sent to the server (moderator computer) 
+The server recives the message and sends it out to all clients connected to the chat
+c. The client recives the message and shows the message along with who wrote it in the chat gui 
