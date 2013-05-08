@@ -11,12 +11,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class PlayerSkeppPanel {
+public class PlayerSkeppPanel extends JPanel{
 
 	private JPanel gridPanel;
 	private PrepPhasePanel prepPanel;
 	private boolean prep;
 
+	@SuppressWarnings("deprecation")
 	public PlayerSkeppPanel(PrepPhasePanel prepPanel) {
 		this.prepPanel = prepPanel;
 		
@@ -24,7 +25,7 @@ public class PlayerSkeppPanel {
 		gridPanel.setPreferredSize(new Dimension(300, 300));
 		gridPanel.setLayout(new GridLayout(7, 7));
 		setCleanBoard();
-
+		prepPanel.show();
 		prep = true;
 	}
 

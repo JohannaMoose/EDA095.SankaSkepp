@@ -3,8 +3,10 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JPanel;
 
-public class PlayerBottomPanel {
+
+public class PlayerBottomPanel extends JPanel{
 /**
  * panel class for the coordinate fire text box, fire button
  * timer lable for showing time left of the round
@@ -14,6 +16,11 @@ public class PlayerBottomPanel {
 	
 	public PlayerBottomPanel(EnemySkeppPanel enemyPanel){
 		this.enemyPanel = enemyPanel;
+	}
+	
+	private void setup(){
+		
+		
 	}
 	
 	private class fireButton implements ActionListener{

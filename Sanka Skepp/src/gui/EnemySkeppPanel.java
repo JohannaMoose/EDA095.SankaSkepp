@@ -8,11 +8,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class EnemySkeppPanel {
+public class EnemySkeppPanel extends JPanel{
 
 	private JPanel gridPanel;
 	
 	public EnemySkeppPanel() {
+		super();
 		gridPanel = new JPanel();
 		gridPanel.setPreferredSize(new Dimension(300, 300));
 		gridPanel.setLayout(new GridLayout(7, 7));

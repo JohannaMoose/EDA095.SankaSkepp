@@ -17,5 +17,22 @@ public class GameHandler {
 		return false;
 	}
 	
+	/**
+	 * method for getting the enemy name
+	 * from the klient perhaps?
+	 */
+	public String getEnemyName(){
+		return "lala";
+	}
+	
+	/**
+	 * method for getting the players name
+	 * from klient perhaps?
+	 * @return
+	 */
+	public String getPlayerName(){
+		return "lulu";
+	}
+	
 
 }

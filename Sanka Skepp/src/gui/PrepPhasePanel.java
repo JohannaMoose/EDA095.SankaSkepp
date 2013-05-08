@@ -1,6 +1,8 @@
 package gui;
 
-public class PrepPhasePanel {
+import javax.swing.JPanel;
+
+public class PrepPhasePanel extends JPanel{
 /**
  * Panel class for prep phase
  * containing radioButton choices for all ships and ship dimension
