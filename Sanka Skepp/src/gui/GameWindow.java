@@ -1,5 +1,5 @@
 package gui;
-import Game;
+import theGame.Game;
 
 import javax.swing.JFrame;
 
@@ -11,7 +11,14 @@ import javax.swing.JFrame;
  */
 public class GameWindow extends JFrame{
 	
+	private Game game;
+	
 	public GameWindow(Game game){
+		this.game = game;
+		setup();
+	}
+	
+	private void setup(){
 		
 	}
 }
