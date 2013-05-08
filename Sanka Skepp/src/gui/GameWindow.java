@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.GridBagConstraints;
+import java.awt.GridLayout;
 
 import theGame.GameHandler;
 
@@ -25,6 +26,7 @@ public class GameWindow extends JFrame {
 	private JLabel enemyName;
 
 	public GameWindow(GameHandler game) {
+		super("Battleships");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.game = game;
 		
@@ -41,6 +43,7 @@ public class GameWindow extends JFrame {
 	@SuppressWarnings("deprecation")
 	private void setup() {
 		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new GridLayout(2,3));
 		this.add(mainPanel);
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridwidth = 2;
