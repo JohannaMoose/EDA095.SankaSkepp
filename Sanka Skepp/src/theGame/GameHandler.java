@@ -1,4 +1,4 @@
-
+package theGame;
 public class GameHandler {
 	
 	private Board board;
