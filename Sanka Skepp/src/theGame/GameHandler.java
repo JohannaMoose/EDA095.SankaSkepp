@@ -1,17 +1,17 @@
 package theGame;
+
 public class GameHandler {
 	
 	private Board board;
-	private Player p1;
-	private Player p2;
+	private PlayerClient pc;
 	
 	
-	public GameHandler(Player p1, Player p2, Board board){
+	public GameHandler(PlayerClient pc, Board board){
 		
 	}
 	
 	public boolean isReady(){
-		if(p1.isReady() && p2.isReady()){
+		if(pc.isReady()){
 			return true;
 		}
 		return false;
