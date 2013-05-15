@@ -5,6 +5,7 @@ import java.net.Socket;
 public class PlayerClient {
 	private String name;
 	private Socket socket;
+	private boolean isReady=false;
 	
 	public PlayerClient(Socket s){
 		this.socket=s;
@@ -12,7 +13,7 @@ public class PlayerClient {
 	}
 	
 	public boolean isReady(){
-		return true;
+		return isReady;
 		
 	}
 	
