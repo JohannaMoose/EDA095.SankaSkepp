@@ -1,12 +1,18 @@
 package gui;
 
+import theGame.GameHandler;
+
 public class guiTest {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		GameWindow window = new GameWindow(null);
+		GameHandler gh = new GameHandler(null);
+
+		EnemySkeppWindow w2 = new EnemySkeppWindow(gh);
+		PlayerSkeppWindow w = new PlayerSkeppWindow(gh,w2);
+		PrepWindow prep = new PrepWindow(gh,w);
 	}
 
 }
