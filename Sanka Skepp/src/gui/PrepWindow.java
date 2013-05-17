@@ -13,6 +13,7 @@ public class PrepWindow {
 			horizontal;
 	private JTextField cords;
 	private static JFrame frame;
+	private static JButton setBtn;
 
 	public PrepWindow(GameHandler game, PlayerSkeppWindow playerWindow) {
 		this.game = game;
@@ -62,9 +63,9 @@ public class PrepWindow {
 		cords.setForeground(Color.BLACK);
 		cords.setHorizontalAlignment(JTextField.CENTER);
 
-		JButton setBtn = new JButton("Set Boat");
+		setBtn = new JButton("Set Boat");
 		setBtn.addActionListener(new setBoatBtn());
-
+		
 		setPanel.add(cords);
 		setPanel.add(setBtn);
 
@@ -80,9 +81,11 @@ public class PrepWindow {
 		frame.setLocation(930, 150);
 		frame.pack();
 		frame.setVisible(true);
-
 	}
 
+	/**
+	 * method for toggling the window
+	 */
 	public static void toggleWindow() {
 		boolean visible = frame.isVisible();
 		if (!visible) {
@@ -91,7 +94,74 @@ public class PrepWindow {
 			frame.setVisible(false);
 		}
 	}
-
+	
+	/**
+	 * method for toggling if boats can be set on the board or not
+	 */
+	public static void togglePrepPhase(){
+		boolean enabled = setBtn.isEnabled();
+		if (!enabled) {
+			setBtn.setEnabled(true);
+		} else {
+			setBtn.setEnabled(false);
+		}
+	}
+	/**
+	 * method for parsing input as A1 or 1A into integer coordinates
+	 * 
+	 * @param cordString
+	 *            cord string gotten from the text field
+	 * @return vector of 2 cords, on place 0 is row and 1 is col
+	 */
+	public static int[] parseCords(String cordString){			
+		int[] cor = new int[2];
+		char[] chars = cordString.toCharArray();
+		if(chars.length>2){
+			return null;
+		}
+		for(char c: chars){
+			switch(c){
+			case '1':
+				cor[0] = 1;
+				break;
+			case '2':
+				cor[0] = 2;
+				break;
+			case '3':
+				cor[0] = 3;
+				break;
+			case '4':
+				cor[0] = 4;
+				break;
+			case '5':
+				cor[0] = 5;
+				break;
+			case '6':
+				cor[0] = 6;
+				break;
+			case 'A':
+				cor[1] = 1;
+				break;
+			case 'B':
+				cor[1] = 2;
+				break;
+			case 'C':
+				cor[1] = 3;
+				break;
+			case 'D':
+				cor[1] = 4;
+				break;
+			case 'E':
+				cor[1] = 5;
+				break;
+			case 'F':
+				cor[1] = 6;
+				break;
+			}	
+		}
+		return cor;
+	}
+	
 	private class setBoatBtn implements ActionListener {
 
 		public void actionPerformed(ActionEvent arg0) {
@@ -117,61 +187,7 @@ public class PrepWindow {
 			cords.setText("");
 		}
 
-		/**
-		 * method for parsing input as A1 or 1A into integer coordinates
-		 * 
-		 * @param cordString
-		 *            cord string gotten from the text field
-		 * @return vector of 2 cords, on place 0 is row and 1 is col
-		 */
-		private int[] parseCords(String cordString){			
-			int[] cor = new int[2];
-			char[] chars = cordString.toCharArray();
-			if(chars.length>2){
-				return null;
-			}
-			for(char c: chars){
-				switch(c){
-				case '1':
-					cor[0] = 1;
-					break;
-				case '2':
-					cor[0] = 2;
-					break;
-				case '3':
-					cor[0] = 3;
-					break;
-				case '4':
-					cor[0] = 4;
-					break;
-				case '5':
-					cor[0] = 5;
-					break;
-				case '6':
-					cor[0] = 6;
-					break;
-				case 'A':
-					cor[1] = 1;
-					break;
-				case 'B':
-					cor[1] = 2;
-					break;
-				case 'C':
-					cor[1] = 3;
-					break;
-				case 'D':
-					cor[1] = 4;
-					break;
-				case 'E':
-					cor[1] = 5;
-					break;
-				case 'F':
-					cor[1] = 6;
-					break;
-				}	
-			}
-			return cor;
-		}
+		
 	}
 
 }

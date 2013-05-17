@@ -17,8 +17,10 @@ public class ChatWindow extends JFrame {
 	private TextField tf = new TextField();
 	private TextArea ta = new TextArea();
 	private String msgToSend; 
+	private static JFrame frame;
 	
 	public ChatWindow(){
+		frame = this;
 		JPanel content = new JPanel();
 		content.setLayout(new BorderLayout() );
 		content.add("North",tf);
@@ -32,7 +34,7 @@ public class ChatWindow extends JFrame {
 		
 		setContentPane(content);
 		setTitle("Chat");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);	
 		setVisible(true);
 		pack();
 	}
@@ -73,6 +75,15 @@ public class ChatWindow extends JFrame {
 		if(message!=null){
 			ta.append(message+"\n");
 			}
+	}
+	
+	public static void toggleChat(){
+		boolean visible = frame.isVisible();
+		if (!visible) {
+			frame.setVisible(true);
+		} else {
+			frame.setVisible(false);
+		}
 	}
 }
 

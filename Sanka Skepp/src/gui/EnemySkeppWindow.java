@@ -1,4 +1,5 @@
 package gui;
+
 import theGame.GameHandler;
 
 import java.awt.*;
@@ -8,9 +9,10 @@ import javax.swing.*;
 public class EnemySkeppWindow {
 
 	private static final int GRID_DIMENSION = 7;
-	private JFrame frame;
+	private static JFrame frame;
 	private JPanel gridPanel;
 	private JTextField[][] fields;
+	private JTextField cordsFire;
 	private GameHandler game; // GameHandler object for running shoot method for
 
 	public EnemySkeppWindow(GameHandler game) {
@@ -21,7 +23,7 @@ public class EnemySkeppWindow {
 		gridPanel = new JPanel();
 		gridPanel.setPreferredSize(new Dimension(300, 300));
 
-		JTextField cordsFire = new JTextField("CORDS");
+		cordsFire = new JTextField("CORDS");
 		Font font = new Font("Verdana", Font.BOLD, 14);
 		cordsFire.setFont(font);
 		cordsFire.setForeground(Color.BLACK);
@@ -51,16 +53,16 @@ public class EnemySkeppWindow {
 		frame.setResizable(false);
 
 		frame.setLocation(270, 150);
-		
-		hitOrMiss(true,1,1);
-		hitOrMiss(false,1,2);
+
+		hitOrMiss(true, 1, 1);
+		hitOrMiss(false, 1, 2);
 	}
 
-	public void toggleWindow() {
+	public static void toggleWindow() {
 		boolean visible = frame.isVisible();
-		if(!visible){
+		if (!visible) {
 			frame.setVisible(true);
-		}else{
+		} else {
 			frame.setVisible(false);
 		}
 	}
@@ -90,8 +92,8 @@ public class EnemySkeppWindow {
 		}
 	}
 
-	public void hitOrMiss(boolean shot, int y, int x) {
-		JTextField tf = fields[y][x];
+	public void hitOrMiss(boolean shot, int row, int col) {
+		JTextField tf = fields[row][col];
 		if (shot == true) {
 			tf.setText("X");
 			tf.setBackground(Color.RED);
@@ -111,7 +113,21 @@ public class EnemySkeppWindow {
 	private class fireBtn implements ActionListener {
 
 		public void actionPerformed(ActionEvent arg0) {
+			String cords = cordsFire.getText();
+			int[] cor = PrepWindow.parseCords(cords);
+			if (cor != null) {
+				boolean shot = game.shoot(cor[0], cor[1]);
+				hitOrMiss(shot,cor[0],cor[1]);
+			} else {
+				// om cor blir null är det felaktigt inmatade koordinater
+				errorDialog("Inmatade koordinater felaktiga. Försök igen.");
+			}
+			cordsFire.setText("");
+		}
 
+		private void errorDialog(String message) {
+			JOptionPane.showMessageDialog(frame, message, "Coordinate Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

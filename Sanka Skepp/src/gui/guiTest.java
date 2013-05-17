@@ -11,7 +11,7 @@ public class guiTest {
 		GameHandler gh = new GameHandler(null);
 
 		EnemySkeppWindow w2 = new EnemySkeppWindow(gh);
-		PlayerSkeppWindow w = new PlayerSkeppWindow(gh,w2);
+		PlayerSkeppWindow w = new PlayerSkeppWindow(gh);
 		PrepWindow prep = new PrepWindow(gh,w);
 	}
 

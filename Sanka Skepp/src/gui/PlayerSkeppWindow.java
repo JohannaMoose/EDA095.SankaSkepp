@@ -13,11 +13,9 @@ public class PlayerSkeppWindow {
 	private JTextField[][] fields;
 	private GameHandler game; // GameHandler object for running getShoot method
 								// for getting a shot from opponent
-	private EnemySkeppWindow enemyWindow;
 	
-	public PlayerSkeppWindow(GameHandler game, EnemySkeppWindow enemyWindow) {
+	public PlayerSkeppWindow(GameHandler game) {
 		this.game = game;
-		this.enemyWindow = enemyWindow;
 		frame = new JFrame("Player Window");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -42,7 +40,8 @@ public class PlayerSkeppWindow {
 		frame.setLocation(600, 150);
 		
 
-		placeBoat(4, 'B', 'H', 1, 3);
+		placeBoat(4, 'B', 'H', 1, 1);
+		
 	}
 
 	public void setCleanBoard() {
@@ -77,30 +76,48 @@ public class PlayerSkeppWindow {
 		// create the menu bar
 		JMenuBar menuBar = new JMenuBar();
 
-		JMenu menu;//menu
-		JMenu sub;
+		JMenu game;//menu
+		JMenu view;
 		JMenuItem item;
-		
-		// build the Game menu
-		menu = new JMenu("Game");
-		menuBar.add(menu);
 	
-		sub = new JMenu("View");		
-		menu.add(sub);
+		/**
+		 * to do
+		 * add code for having other options in the menu
+		 * eg. "Give Up", "Find New Opponent", "Change Username"
+		 */
+		// build the Game menu
+		game = new JMenu("Game");
+		menuBar.add(game);
+	
+		view = new JMenu("View");		
+		menuBar.add(view);
 		
-		//submenu of View
+		//menu options for Game
+		item = new JMenuItem("Change Username");
+			// action listener
+		game.add(item);
+
+		item = new JMenuItem("Find New Opponent");
+			// action listener
+		game.add(item);
+		
+		item = new JMenuItem("Surrender");
+			// action listener
+		game.add(item);
+		
+		//menu options for View
 		item = new JMenuItem("Toggle Enemy Window");	
 		item.addActionListener(new toggleEnemy());
-		sub.add(item);
+		view.add(item);
 		
 		item = new JMenuItem("Toggle Chat Window");
-		sub.add(item);
+		view.add(item);
 		
 		item = new JMenuItem("Toggle Prep Window");
 		item.addActionListener(new togglePrep());
-		sub.add(item);
+		view.add(item);
 		
-		menu.add(sub);	
+		
 		return menuBar;
 	}
 	
@@ -146,7 +163,7 @@ public class PlayerSkeppWindow {
 		if (col > 0 && col < 7 && row < 7 && row > 0) {
 			if (align == 'H' && (col + size - 1) < GRID_DIMENSION) {
 				for (int i = 0; i < size; i++) {
-					JTextField tf = fields[row][col + 1];
+					JTextField tf = fields[row][col + i];
 					tf.setText("" + boatCode);
 					tf.setBackground(Color.GRAY);
 				}
@@ -157,23 +174,27 @@ public class PlayerSkeppWindow {
 					tf.setBackground(Color.GRAY);
 				}
 			} else {
-				/**
-				 * insert dialog message for error
-				 */
-				System.out.println("FEL DEN HAMNAR UTANFÖR");
+				// dialog popup error
+				errorDialog("Delar av båten hamnar utanför brädet. Försök en annan koordinat.");
 			}
 		} else {
-			/**
-			 * insert dialog box for error
-			 */
+			// dialog popup error
+			errorDialog("Den inmatade koordinaten finns ej på brädet. Försök en annan koordinat.");
 			System.out.println("FEL: inmatad kordinat utanför brädet");
 		}
+	}
+	
+	private void errorDialog(String message){
+		JOptionPane.showMessageDialog(frame,
+			    message,
+			    "Coordinate Error",
+			    JOptionPane.ERROR_MESSAGE);
 	}
 	
 	private class toggleEnemy implements ActionListener {
 
 		public void actionPerformed(ActionEvent arg0) {
-			enemyWindow.toggleWindow();
+			EnemySkeppWindow.toggleWindow();
 		}
 	}
 	
