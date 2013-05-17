@@ -12,7 +12,7 @@ public class EnemySkeppWindow {
 	private static JFrame frame;
 	private JPanel gridPanel;
 	private JTextField[][] fields;
-	private JTextField cordsFire;
+	private static JTextField cordsFire;
 	private GameHandler game; // GameHandler object for running shoot method for
 
 	public EnemySkeppWindow(GameHandler game) {
@@ -61,6 +61,7 @@ public class EnemySkeppWindow {
 	public static void toggleWindow() {
 		boolean visible = frame.isVisible();
 		if (!visible) {
+			cordsFire.setText("CORDS");
 			frame.setVisible(true);
 		} else {
 			frame.setVisible(false);
@@ -116,8 +117,8 @@ public class EnemySkeppWindow {
 			String cords = cordsFire.getText();
 			int[] cor = PrepWindow.parseCords(cords);
 			if (cor != null) {
-				boolean shot = game.shoot(cor[0], cor[1]);
-				hitOrMiss(shot,cor[0],cor[1]);
+				//boolean shot = game.shoot(cor[0], cor[1]);
+				hitOrMiss(false,cor[0],cor[1]);
 			} else {
 				// om cor blir null är det felaktigt inmatade koordinater
 				errorDialog("Inmatade koordinater felaktiga. Försök igen.");

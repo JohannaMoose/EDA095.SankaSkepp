@@ -8,7 +8,7 @@ import javax.swing.*;
 public class PlayerSkeppWindow {
 
 	private static final int GRID_DIMENSION = 7;
-	private JFrame frame;
+	private static JFrame frame;
 	private JPanel gridPanel;
 	private JTextField[][] fields;
 	private GameHandler game; // GameHandler object for running getShoot method
@@ -41,6 +41,8 @@ public class PlayerSkeppWindow {
 		
 
 		placeBoat(4, 'B', 'H', 1, 1);
+		
+		hitOrMiss(true,1,1);
 		
 	}
 
@@ -184,7 +186,7 @@ public class PlayerSkeppWindow {
 		}
 	}
 	
-	private void errorDialog(String message){
+	public static void errorDialog(String message){
 		JOptionPane.showMessageDialog(frame,
 			    message,
 			    "Coordinate Error",

@@ -1,4 +1,5 @@
 package gui;
+
 import theGame.GameHandler;
 
 import java.awt.*;
@@ -65,7 +66,7 @@ public class PrepWindow {
 
 		setBtn = new JButton("Set Boat");
 		setBtn.addActionListener(new setBoatBtn());
-		
+
 		setPanel.add(cords);
 		setPanel.add(setBtn);
 
@@ -94,11 +95,11 @@ public class PrepWindow {
 			frame.setVisible(false);
 		}
 	}
-	
+
 	/**
 	 * method for toggling if boats can be set on the board or not
 	 */
-	public static void togglePrepPhase(){
+	public static void togglePrepPhase() {
 		boolean enabled = setBtn.isEnabled();
 		if (!enabled) {
 			setBtn.setEnabled(true);
@@ -106,6 +107,7 @@ public class PrepWindow {
 			setBtn.setEnabled(false);
 		}
 	}
+
 	/**
 	 * method for parsing input as A1 or 1A into integer coordinates
 	 * 
@@ -113,14 +115,14 @@ public class PrepWindow {
 	 *            cord string gotten from the text field
 	 * @return vector of 2 cords, on place 0 is row and 1 is col
 	 */
-	public static int[] parseCords(String cordString){			
+	public static int[] parseCords(String cordString) {
 		int[] cor = new int[2];
 		char[] chars = cordString.toCharArray();
-		if(chars.length>2){
+		if (chars.length > 2) {
 			return null;
 		}
-		for(char c: chars){
-			switch(c){
+		for (char c : chars) {
+			switch (c) {
 			case '1':
 				cor[0] = 1;
 				break;
@@ -157,11 +159,21 @@ public class PrepWindow {
 			case 'F':
 				cor[1] = 6;
 				break;
-			}	
+			default:
+				cor = null;
+				break;
+			}
+
 		}
 		return cor;
 	}
+
 	
+	/**
+	 * edit code to create a Boat object and then try to place it through the GameHandler and see if it can be placed
+	 * @author Bjarni
+	 *
+	 */
 	private class setBoatBtn implements ActionListener {
 
 		public void actionPerformed(ActionEvent arg0) {
@@ -187,7 +199,6 @@ public class PrepWindow {
 			cords.setText("");
 		}
 
-		
 	}
 
 }
