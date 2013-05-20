@@ -43,6 +43,45 @@ public class GameHandler {
 		return true;
 
 	}
+	public String fire(String coord) { // Nytt!!!
+		client.sendShoot(coord);
+		return waitForRespons();
+
+	}
+
+	private String waitForRespons() { // Nytt!!!
+		String coord = client.getShoot();
+		if (coord.equals("Winner") || coord.equals("Loser")
+				|| coord.equals("Draw")) {
+			return coord;
+		} else {
+
+			int row = (int) coord.charAt(0);
+			int col = (int) coord.charAt(1);
+			boolean hit = shoot(row, col);
+			if (hit) {
+				GameClient.sendCommand("Hit");
+				return "Hit";
+			} else {
+				GameClient.sendCommand("Miss");
+				return "Miss";
+			}
+		}
+	}
+
+	
+
+	public void seeBoard() {				//Nytt!!!
+		for (int i = 0; i < 7; i++) {
+			System.out.println(" ");
+			for (int j = 0; j < 7; j++) {
+				char temp = client.board.getSpot(i, j);
+				System.out.print(temp + " ");
+
+			}
+		}
+	}
+	
 	public boolean shoot(int row, int col){
 		if(client.board.getSpot(row, col) == 'X'){
 			System.out.println("Du har redan skjutit där");

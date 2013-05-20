@@ -16,7 +16,7 @@ import chat.ChatServer;
 public class GameClient {
 	private String userName;
 	private Socket socket;
-	private OutputStream outStream;//skickar till server 
+	private static OutputStream outStream;//skickar till server 
 	private BufferedReader inStream;//data från server
 	public BoardNew board;
 
@@ -61,6 +61,21 @@ public void sendShoot(String shoot){
 	} catch (IOException e) {
 		e.printStackTrace();
 	}
+}
+public static void sendCommand(String command){				//Nytt!!!!
+	if(!command.endsWith("\r\n"))
+	{
+		command = command + "\r\n";
+	}
+	String stringToSend = command;
+	try {
+		System.out.println("Skickar meddelande till servern: " + stringToSend);
+		outStream.write(stringToSend.getBytes());
+		outStream.flush();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	
 }
 
 public String getShoot(){

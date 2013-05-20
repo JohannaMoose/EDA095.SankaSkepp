@@ -117,13 +117,26 @@ public class EnemySkeppWindow {
 			String cords = cordsFire.getText();
 			int[] cor = PrepWindow.parseCords(cords);
 			if (cor != null) {
-				//boolean shot = game.shoot(cor[0], cor[1]);
-				hitOrMiss(false,cor[0],cor[1]);
+				String command = game.fire("" + cor[0] + cor[1]);				//Nytt!!!
+				if (command.equals("Winner") || command.equals("Loser")
+						|| command.equals("Draw")) {
+					messageDialog(command);
+				}else if(command.equals("Hit")){
+					hitOrMiss(true,cor[0],cor[1]);
+				}else{
+					hitOrMiss(false,cor[0],cor[1]);
+				}
+				
 			} else {
 				// om cor blir null är det felaktigt inmatade koordinater
 				errorDialog("Inmatade koordinater felaktiga. Försök igen.");
 			}
 			cordsFire.setText("");
+		}
+
+private void messageDialog(String message) {
+			JOptionPane.showMessageDialog(frame, message, "Game is over.\n Result: " + message,
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 
 		private void errorDialog(String message) {
