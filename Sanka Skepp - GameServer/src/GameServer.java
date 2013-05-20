@@ -5,7 +5,8 @@ import java.net.Socket;
 import java.util.Vector;
 
 public class GameServer {
-	Vector<Socket> waitingPlayers;
+	static Vector<Socket> waitingPlayers;
+	static Vector<GameThread> gamesInProgress;
 	ServerSocket socket;
 	
 	public static int GAME_SERVER_PORT = 31245;
@@ -20,6 +21,14 @@ public class GameServer {
 		}
 		System.out.println("Server is up and running");
 		letUsersConnect();
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static void gameEnd(GameThread game, Socket player1, Socket player2){
+		waitingPlayers.add(player1);
+		waitingPlayers.add(player2);
+		gamesInProgress.remove(game);
+		game.stop();
 	}
 	
 	private void letUsersConnect()
