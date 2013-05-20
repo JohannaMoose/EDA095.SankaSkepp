@@ -40,12 +40,12 @@ public class GameThread extends Thread {
 					p1Out.write("Draw".getBytes());
 					gameEnd = true;
 				}else if (p1Dead){
-					p1Out.write(p2Command.getBytes());
+					p1Out.write("Loser".getBytes());
 					p2Out.write("Winner".getBytes());
 					gameEnd = true;
 				}else if (p2Dead){
 					p1Out.write("Winner".getBytes());
-					p2Out.write(p1Command.getBytes());
+					p2Out.write("Loser".getBytes());
 					gameEnd = true;
 				} else {
 					p1Out.write(p2Command.getBytes());

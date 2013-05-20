@@ -1,79 +1,78 @@
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Iterator;
 import java.util.Vector;
 
 public class GameServer {
 	static Vector<Socket> waitingPlayers;
+	private Vector<Socket> playersForGames;
 	static Vector<GameThread> gamesInProgress;
+
 	ServerSocket socket;
-	
+
 	public static int GAME_SERVER_PORT = 31245;
-	
-	public GameServer()
-	{
+
+	public GameServer() {
 		waitingPlayers = new Vector<Socket>();
+		gamesInProgress = new Vector<GameThread>();
 		try {
 			socket = new ServerSocket(GAME_SERVER_PORT);
 		} catch (IOException e) {
-			System.out.println("Server couldn't connect to port: " + GAME_SERVER_PORT);
+			System.out.println("Server couldn't connect to port: "
+					+ GAME_SERVER_PORT);
 		}
 		System.out.println("Server is up and running");
-		letUsersConnect();
+		NewConnectionThread conn = new NewConnectionThread(socket);
+		conn.start();
+		serverRunning();
 	}
-	
+
 	@SuppressWarnings("deprecation")
-	public static void gameEnd(GameThread game, Socket player1, Socket player2){
+	public static void gameEnd(GameThread game, Socket player1, Socket player2) {
 		waitingPlayers.add(player1);
 		waitingPlayers.add(player2);
 		gamesInProgress.remove(game);
 		game.stop();
 	}
-	
-	private void letUsersConnect()
-	{
-		while(true)
-		{
-			try {
-				Socket player = socket.accept();
-				if(waitingPlayers.size() > 1)
-					matchWithPlayer(player);
-				else 
-					waitingPlayers.add(player);
-			} catch (IOException e) {
-				System.out.println("Problem accepting new connection");
+
+	private void serverRunning() {
+		while (true) {
+			Iterator<Socket> iter = waitingPlayers.iterator();
+			while (iter.hasNext()) {
+				Socket player = iter.next();
+				try {
+					BufferedReader pIn = new BufferedReader(
+							new InputStreamReader(player.getInputStream()));
+					String command = null;
+					if (pIn.ready()) {
+						command = pIn.readLine();
+					}
+					if (command != null && command.equals("New")) {
+						waitingPlayers.remove(player);
+						playersForGames.add(player);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			Iterator<Socket> gameIter = playersForGames.iterator();
+			while (gameIter.hasNext()) {
+				Socket player1 = gameIter.next();
+				if (gameIter.hasNext()) {
+					Socket player2 = gameIter.next();
+					gamesInProgress.add(new GameThread(player1, player2));
+					playersForGames.remove(player1);
+					playersForGames.remove(player2);
+				}
 			}
 		}
 	}
-	
-	private void matchWithPlayer(Socket player1)
-	{
-		Socket player2 = waitingPlayers.get(0);
-		waitingPlayers.remove(0);
-		informPlayerAboutOpponent(player1, player2);
-		informPlayerAboutOpponent(player2, player1);
-	}
-	
-	private void informPlayerAboutOpponent(Socket player, Socket opponent)
-	{
-		BufferedOutputStream toPlayer;
-		try {
-			toPlayer = new BufferedOutputStream(
-					player.getOutputStream());
-			toPlayer.write(getConnectionForOpponent(opponent));
-		} catch (IOException e) {
-			System.out.println("Problem with the stream to inform player about opponent");
-		}
-	}
-	
-	private byte[] getConnectionForOpponent(Socket opponent)
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append("Opponent:");
-		sb.append("IP = ");
-		sb.append(opponent.getInetAddress().getAddress());
-		
-		return sb.toString().getBytes();
+
+	public static void newConnection(Socket player){
+		waitingPlayers.add(player);
 	}
 }
