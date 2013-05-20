@@ -1,7 +1,7 @@
 package gui;
 
 import theGame.GameHandler;
-
+import theGame.BoatNew;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -195,8 +195,13 @@ public class PrepWindow {
 				size = 2;
 			}
 			int[] cor = parseCords(cords.getText());
-			playerWindow.placeBoat(size, boatCode, align, cor[0], cor[1]);
-			cords.setText("");
+			BoatNew boat = new BoatNew(cor[0],cor[1],align,size,boatCode);
+			boolean insert = game.setBoat(boat);
+			
+			if(insert){
+				playerWindow.placeBoat(boat);
+				cords.setText("");
+			}
 		}
 
 	}

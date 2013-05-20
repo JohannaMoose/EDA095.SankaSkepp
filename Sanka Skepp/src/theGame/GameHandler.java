@@ -72,4 +72,8 @@ public class GameHandler {
 		System.out.println("Du missade");
 		return false;
 	}
+	
+	public boolean setBoat(BoatNew boat){
+		return client.board.insertBoat(boat);
+	}
 }

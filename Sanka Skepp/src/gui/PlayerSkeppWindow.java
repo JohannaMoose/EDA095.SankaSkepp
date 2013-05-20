@@ -1,4 +1,5 @@
 package gui;
+import theGame.BoatNew;
 import theGame.GameHandler;
 
 import java.awt.*;
@@ -40,7 +41,7 @@ public class PlayerSkeppWindow {
 		frame.setLocation(600, 150);
 		
 
-		placeBoat(4, 'B', 'H', 1, 1);
+		placeBoat(new BoatNew(1, 1,'H',4, 'B'));
 		
 		hitOrMiss(true,1,1);
 		
@@ -160,19 +161,19 @@ public class PlayerSkeppWindow {
 	 * @param col
 	 * @param row
 	 */
-	public void placeBoat(int size, char boatCode, char align, int row, int col ) {
-		removeBoatFromBoard(boatCode);
-		if (col > 0 && col < 7 && row < 7 && row > 0) {
-			if (align == 'H' && (col + size - 1) < GRID_DIMENSION) {
-				for (int i = 0; i < size; i++) {
-					JTextField tf = fields[row][col + i];
-					tf.setText("" + boatCode);
+	public void placeBoat(BoatNew boat) {
+		removeBoatFromBoard(boat.getId());
+		if (boat.getCol() > 0 && boat.getCol() < 7 && boat.getRow() < 7 && boat.getRow() > 0) {
+			if (boat.getPosition() == 'H' && (boat.getCol() + boat.getSize() - 1) < GRID_DIMENSION) {
+				for (int i = 0; i < boat.getSize(); i++) {
+					JTextField tf = fields[boat.getRow()][boat.getCol() + i];
+					tf.setText("" + boat.getId());
 					tf.setBackground(Color.GRAY);
 				}
-			} else if (align == 'V' && (row + size - 1) < GRID_DIMENSION) {
-				for (int i = 0; i < size; i++) {
-					JTextField tf = fields[row + i][col];
-					tf.setText("" + boatCode);
+			} else if (boat.getPosition() == 'V' && (boat.getRow() + boat.getSize() - 1) < GRID_DIMENSION) {
+				for (int i = 0; i < boat.getSize(); i++) {
+					JTextField tf = fields[boat.getRow() + i][boat.getCol()];
+					tf.setText("" + boat.getId());
 					tf.setBackground(Color.GRAY);
 				}
 			} else {
