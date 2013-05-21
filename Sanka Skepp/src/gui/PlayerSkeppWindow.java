@@ -1,5 +1,6 @@
 package gui;
 import theGame.BoatNew;
+import theGame.GameClient;
 import theGame.GameHandler;
 
 import java.awt.*;
@@ -11,7 +12,7 @@ public class PlayerSkeppWindow {
 	private static final int GRID_DIMENSION = 7;
 	private static JFrame frame;
 	private JPanel gridPanel;
-	private JTextField[][] fields;
+	private static JTextField[][] fields;
 	private GameHandler game; // GameHandler object for running getShoot method
 								// for getting a shot from opponent
 	
@@ -39,12 +40,7 @@ public class PlayerSkeppWindow {
 
 		frame.setResizable(false);
 		frame.setLocation(600, 150);
-		
-
-		placeBoat(new BoatNew(1, 1,'H',4, 'B'));
-		
-		hitOrMiss(true,1,1);
-		
+				
 	}
 
 	public void setCleanBoard() {
@@ -94,18 +90,13 @@ public class PlayerSkeppWindow {
 	
 		view = new JMenu("View");		
 		menuBar.add(view);
-		
-		//menu options for Game
-		item = new JMenuItem("Change Username");
-			// action listener
-		game.add(item);
 
 		item = new JMenuItem("Find New Opponent");
-			// action listener
+		item.addActionListener(new newOpponent());
 		game.add(item);
 		
 		item = new JMenuItem("Surrender");
-			// action listener
+		item.addActionListener(new surrender());
 		game.add(item);
 		
 		//menu options for View
@@ -187,6 +178,15 @@ public class PlayerSkeppWindow {
 		}
 	}
 	
+	public static void cleanBoard(){
+		for(int i = 1; i < 7; i++){
+			for(int j = 1; j < 7; j++){
+				fields[i][j].setText(" ");
+				fields[i][j].setBackground(Color.WHITE);
+			}
+		}
+	}
+	
 	public static void errorDialog(String message){
 		JOptionPane.showMessageDialog(frame,
 			    message,
@@ -205,6 +205,21 @@ public class PlayerSkeppWindow {
 
 		public void actionPerformed(ActionEvent arg0) {
 			PrepWindow.toggleWindow();
+		}
+	}
+	
+	private class newOpponent implements ActionListener {
+
+		public void actionPerformed(ActionEvent arg0) {
+			GameClient.sendCommand("New");
+			
+		}
+	}
+	
+	private class surrender implements ActionListener {
+
+		public void actionPerformed(ActionEvent arg0) {
+			GameClient.sendCommand("Dead");
 		}
 	}
 }

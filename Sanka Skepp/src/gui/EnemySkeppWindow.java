@@ -11,7 +11,7 @@ public class EnemySkeppWindow {
 	private static final int GRID_DIMENSION = 7;
 	private static JFrame frame;
 	private JPanel gridPanel;
-	private JTextField[][] fields;
+	private static JTextField[][] fields;
 	private static JTextField cordsFire;
 	private GameHandler game; // GameHandler object for running shoot method for
 
@@ -54,8 +54,6 @@ public class EnemySkeppWindow {
 
 		frame.setLocation(270, 150);
 
-		hitOrMiss(true, 1, 1);
-		hitOrMiss(false, 1, 2);
 	}
 
 	public static void toggleWindow() {
@@ -104,6 +102,15 @@ public class EnemySkeppWindow {
 		}
 	}
 
+	public static void cleanBoard(){
+		for(int i = 1; i < 7; i++){
+			for(int j = 1; j < 7; j++){
+				fields[i][j].setText(" ");
+				fields[i][j].setBackground(Color.WHITE);
+			}
+		}
+	}
+	
 	/**
 	 * action for firing a shot at the inputted coordinates and get answer and
 	 * draw hit or miss on board
@@ -134,7 +141,7 @@ public class EnemySkeppWindow {
 			cordsFire.setText("");
 		}
 
-private void messageDialog(String message) {
+		private void messageDialog(String message) {
 			JOptionPane.showMessageDialog(frame, message, "Game is over.\n Result: " + message,
 					JOptionPane.INFORMATION_MESSAGE);
 		}
