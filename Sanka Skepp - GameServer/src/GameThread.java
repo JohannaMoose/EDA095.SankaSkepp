@@ -2,29 +2,38 @@ import java.net.*;
 import java.io.*;
 
 public class GameThread extends Thread {
-
-	private Socket player1;
-	private Socket player2;
+	OutputStream p1Out;
+	OutputStream p2Out;
+	BufferedReader p1In;
+	BufferedReader p2In;
 	private boolean gameEnd;
+	Socket player1; 
+	Socket player2;
 
 	public GameThread(Socket player1, Socket player2) {
-		this.player1 = player1;
+		try {
+			p1Out = player1.getOutputStream();
+			p2Out = player2.getOutputStream();
+			p1In = new BufferedReader(new InputStreamReader(
+					player1.getInputStream()));
+			p2In = new BufferedReader(new InputStreamReader(
+					player2.getInputStream()));
+		} catch (IOException e) {
+			System.out.println("Problem setting up streams to players");
+			e.printStackTrace();
+		}
+		
+		this.player1 = player1; 
 		this.player2 = player2;
 		gameEnd = false;
 	}
 
 	public void run() {
-		try {
-			OutputStream p1Out = player1.getOutputStream();
-			OutputStream p2Out = player2.getOutputStream();
-
-			BufferedReader p1In = new BufferedReader(new InputStreamReader(
-					player1.getInputStream()));
-			BufferedReader p2In = new BufferedReader(new InputStreamReader(
-					player2.getInputStream()));
-			while (true) {
+		try {	
+		while (true) {
+				String p1Shot;
 				
-				String p1Shot = p1In.readLine();
+					p1Shot = p1In.readLine();
 				String p2Shot = p2In.readLine();
 
 				p1Out.write(p2Shot.getBytes());
@@ -55,8 +64,9 @@ public class GameThread extends Thread {
 					GameServer.gameEnd(this, player1, player2);
 				}
 			}
-		} catch (Exception e) {
-
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

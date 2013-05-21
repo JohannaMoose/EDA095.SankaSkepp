@@ -1,4 +1,3 @@
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,38 +35,46 @@ public class GameServer {
 		waitingPlayers.add(player1);
 		waitingPlayers.add(player2);
 		gamesInProgress.remove(game);
-		game.stop();
+		game.stop(); // Kills the thread - TODO do it properly
 	}
 
 	private void serverRunning() {
 		while (true) {
-			Iterator<Socket> iter = waitingPlayers.iterator();
-			while (iter.hasNext()) {
-				Socket player = iter.next();
-				try {
-					BufferedReader pIn = new BufferedReader(
-							new InputStreamReader(player.getInputStream()));
-					String command = null;
-					if (pIn.ready()) {
-						command = pIn.readLine();
-					}
-					if (command != null && command.equals("New")) {
-						waitingPlayers.remove(player);
-						playersForGames.add(player);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
+			playersReadyForGame();
+			matchPlayers();
+		}
+	}
+
+	private void playersReadyForGame() {
+		Iterator<Socket> iter = waitingPlayers.iterator();
+		while (iter.hasNext()) {
+			Socket player = iter.next();
+			try {
+				BufferedReader pIn = new BufferedReader(
+						new InputStreamReader(player.getInputStream()));
+				String command = null;
+				if (pIn.ready()) {
+					command = pIn.readLine();
 				}
+				if (command != null && command.equals("New")) {
+					waitingPlayers.remove(player);
+					playersForGames.add(player);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			Iterator<Socket> gameIter = playersForGames.iterator();
-			while (gameIter.hasNext()) {
-				Socket player1 = gameIter.next();
-				if (gameIter.hasNext()) {
-					Socket player2 = gameIter.next();
-					gamesInProgress.add(new GameThread(player1, player2));
-					playersForGames.remove(player1);
-					playersForGames.remove(player2);
-				}
+		}
+	}
+
+	private void matchPlayers() {
+		Iterator<Socket> gameIter = playersForGames.iterator();
+		while (gameIter.hasNext()) {
+			Socket player1 = gameIter.next();
+			if (gameIter.hasNext()) {
+				Socket player2 = gameIter.next();
+				gamesInProgress.add(new GameThread(player1, player2));
+				playersForGames.remove(player1);
+				playersForGames.remove(player2);
 			}
 		}
 	}
