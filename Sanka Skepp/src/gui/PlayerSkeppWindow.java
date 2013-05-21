@@ -212,6 +212,8 @@ public class PlayerSkeppWindow {
 
 		public void actionPerformed(ActionEvent arg0) {
 			GameClient.sendCommand("New");
+			PlayerSkeppWindow.cleanBoard();
+			EnemySkeppWindow.cleanBoard();
 			
 		}
 	}

@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import GameServer.GameServer;
+import server.ConnectionServer;
 
 import chat.ChatServer;
 
@@ -32,7 +32,7 @@ public class GameClient {
 
 	private void connectToServer() {
 		try {
-			socket = new Socket("localhost", GameServer.GAME_SERVER_PORT);
+			socket = new Socket("localhost", ConnectionServer.GAME_SERVER_PORT);
 			outStream = socket.getOutputStream();
 			inStream = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
