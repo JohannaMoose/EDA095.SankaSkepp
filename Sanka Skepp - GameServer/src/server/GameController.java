@@ -10,6 +10,8 @@ public class GameController {
 	public GameController()
 	{
 		playersWaiting = new Vector<Player>();
+		idlePlayers = new Vector<Player>();
+		goingGames = new Vector<Game>();
 	}
 	
 	public void addNewIdelPlayer(Player newPlayer)
