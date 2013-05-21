@@ -1,5 +1,6 @@
 package gui;
 
+import theGame.GameClient;
 import theGame.GameHandler;
 import theGame.BoatNew;
 import java.awt.*;
@@ -15,6 +16,7 @@ public class PrepWindow {
 	private JTextField cords;
 	private static JFrame frame;
 	private static JButton setBtn;
+	private static JButton rdyBtn;
 
 	public PrepWindow(GameHandler game, PlayerSkeppWindow playerWindow) {
 		this.game = game;
@@ -66,9 +68,13 @@ public class PrepWindow {
 
 		setBtn = new JButton("Set Boat");
 		setBtn.addActionListener(new setBoatBtn());
+		
+		rdyBtn = new JButton("Ready");
+		rdyBtn.addActionListener(new readyBtn());
 
 		setPanel.add(cords);
 		setPanel.add(setBtn);
+		setPanel.add(rdyBtn);
 
 		JPanel contentPanel = new JPanel(new BorderLayout());
 		contentPanel.add(shipRadio, BorderLayout.LINE_START);
@@ -103,8 +109,10 @@ public class PrepWindow {
 		boolean enabled = setBtn.isEnabled();
 		if (!enabled) {
 			setBtn.setEnabled(true);
+			rdyBtn.setEnabled(true);
 		} else {
 			setBtn.setEnabled(false);
+			rdyBtn.setEnabled(false);
 		}
 	}
 
@@ -206,4 +214,16 @@ public class PrepWindow {
 
 	}
 
+	private class readyBtn implements ActionListener{
+		
+		public void actionPerformed(ActionEvent arg0){
+			boolean boatsSet = PlayerSkeppWindow.checkBoats();
+			if(boatsSet){
+				GameClient.sendCommand("Ready");
+				togglePrepPhase();
+			}else{
+				PlayerSkeppWindow.errorDialog("Not all boats are on the board.");
+			}
+		}
+	}
 }
