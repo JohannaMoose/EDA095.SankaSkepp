@@ -17,7 +17,7 @@ public class Game extends Thread {
 	
 	public void run()
 	{
-		
+		while(!gameEnd){
 		try {
 			playersShoot();
 			handleResultOfShots();
@@ -28,6 +28,7 @@ public class Game extends Thread {
 		} catch (IOException e) {
 			System.out.println("Problems with shot");
 			e.printStackTrace();
+		}
 		}
 	}
 
