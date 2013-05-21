@@ -28,7 +28,6 @@ public class GameHandler {
 	}
 
 	public boolean GameOver() {
-
 		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j < 7; j++) {
 				char temp = client.board.getSpot(i, j);
@@ -40,6 +39,7 @@ public class GameHandler {
 			}
 
 		}
+		client.board.cleanBoard();
 		return true;
 
 	}

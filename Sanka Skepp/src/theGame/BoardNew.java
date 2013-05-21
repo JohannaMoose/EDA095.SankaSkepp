@@ -1,5 +1,7 @@
 package theGame;
 
+import gui.EnemySkeppWindow;
+
 import java.util.ArrayList;
 
 
@@ -82,5 +84,14 @@ public class BoardNew {
 	}
 	public void setHit(int row, int col){
 		bord[row][col] = 'X';
+	}
+	
+	public void cleanBoard(){
+		for(int i = 0; i<7; i++){
+			for(int j = 0; j<7; j++){
+				bord[i][j]='0';
+			}
+		}
+		EnemySkeppWindow.cleanBoard();
 	}
 }
