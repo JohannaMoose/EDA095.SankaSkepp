@@ -19,13 +19,12 @@ public class ChatServer extends Thread {
 			e.printStackTrace();
 		}
 		clientConnections = new ArrayList<ChatServerThread>();
-
 	}
 
 	public void run(){
 		while (true) {
 			try {
-				System.out.println("Server startar");
+				System.out.println("Chatserver startar");
 				Socket connection = socket.accept();
 				ChatServerThread chatThread = new ChatServerThread(connection,
 						this);

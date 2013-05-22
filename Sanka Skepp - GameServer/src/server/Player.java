@@ -27,19 +27,19 @@ public class Player extends Thread {
 	}
 
 	public void run() {
-		System.out.println("Ny spelare");
-			while (idle) {
-				try {
-					String command = fromPlayer.readLine();
-
-					if (command.equals("New")) {
-						idle = false;
-						controller.addNewPlayerToPool(this);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+//		System.out.println("Ny spelare");
+//			while (idle) {
+//				try {
+//					String command = fromPlayer.readLine();
+//
+//					if (command.equals("New")) {
+//						idle = false;
+//						controller.addNewPlayerToPool(this);
+//					}
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
 	}
 
 	public void setIdle(boolean idle) {
@@ -53,6 +53,10 @@ public class Player extends Thread {
 	}
 
 	public void sendMsgToPlayer(String message) throws IOException {
+		if(!message.endsWith("\r\n"))
+		{
+			message = message + "\r\n";
+		}
 		toPlayer.write(message.getBytes());
 		toPlayer.flush();
 	}

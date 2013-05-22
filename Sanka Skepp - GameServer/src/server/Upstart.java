@@ -6,9 +6,9 @@ public class Upstart {
 	{
 		GameController controller = new GameController();
 		ConnectionServer connection = new ConnectionServer(controller);
-		connection.run();
+		connection.start();
 		
 		ChatServer chat = new ChatServer();
-		chat.run();
+		chat.start();
 	}
 }

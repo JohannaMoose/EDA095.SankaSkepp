@@ -48,8 +48,8 @@ public class GameHandler {
 			return coord;
 		} else {
 
-			int row = (int) coord.charAt(0);
-			int col = (int) coord.charAt(1);
+			int row = convertCharToIntCord(coord.charAt(0));
+			int col = convertCharToIntCord(coord.charAt(1));
 			boolean hit = shoot(row, col);
 			if (hit) {
 				GameClient.sendCommand("Hit");
@@ -61,7 +61,10 @@ public class GameHandler {
 		}
 	}
 
-	
+	private int convertCharToIntCord(char c)
+	{
+		return Character.getNumericValue(c);
+	}
 
 	public void seeBoard() {				//Nytt!!!
 		for (int i = 0; i < 7; i++) {

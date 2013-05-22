@@ -24,7 +24,7 @@ public class GameController {
 	{
 		idlePlayers.remove(newPlayer);
 		System.out.println("Ny spelare i poolen");
-		if(playersWaiting.size() > 1){
+		if(playersWaiting.size() > 0){
 			matchWithOpponent(newPlayer);
 		}else {
 			playersWaiting.add(newPlayer);
@@ -37,7 +37,7 @@ public class GameController {
 		playersWaiting.trimToSize();
 		
 		Game game = new Game(player, opponent, this);
-		game.run();
+		game.start();
 		goingGames.add(game);
 	}
 	
@@ -53,5 +53,14 @@ public class GameController {
 		
 		idlePlayers.add(player1);
 		idlePlayers.add(player2);
+	}
+	
+	public synchronized void disconnectPlayer(Player player)
+	{
+		idlePlayers.remove(player);
+		playersWaiting.remove(player);
+		idlePlayers.trimToSize();
+		playersWaiting.trimToSize();
+		System.out.println("Player disconnected");
 	}
 }

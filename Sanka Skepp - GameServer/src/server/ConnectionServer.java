@@ -27,7 +27,7 @@ public class ConnectionServer extends Thread {
 			try {
 				Socket connection = socket.accept();
 				Player player = new Player(connection, controller);
-				controller.addNewIdelPlayer(player);
+				controller.addNewPlayerToPool(player);
 				player.start();
 			} catch (IOException e) {
 				e.printStackTrace();
