@@ -1,4 +1,5 @@
 package gui;
+
 import theGame.BoatNew;
 import theGame.GameClient;
 import theGame.GameHandler;
@@ -15,7 +16,7 @@ public class PlayerSkeppWindow {
 	private static JTextField[][] fields;
 	private GameHandler game; // GameHandler object for running getShoot method
 								// for getting a shot from opponent
-	
+
 	public PlayerSkeppWindow(GameHandler game) {
 		this.game = game;
 		frame = new JFrame("Player Window");
@@ -32,15 +33,15 @@ public class PlayerSkeppWindow {
 		frame.setLayout(new BorderLayout());
 		frame.add(gridPanel);
 		frame.add(buttonPanel, BorderLayout.SOUTH);
-		
+
 		frame.setJMenuBar(createMenuBar());
-		
+
 		frame.pack();
 		frame.setVisible(true);
 
 		frame.setResizable(false);
 		frame.setLocation(600, 150);
-				
+
 	}
 
 	public void setCleanBoard() {
@@ -70,51 +71,48 @@ public class PlayerSkeppWindow {
 		}
 	}
 
-	public JMenuBar createMenuBar()
-	{ 
+	public JMenuBar createMenuBar() {
 		// create the menu bar
 		JMenuBar menuBar = new JMenuBar();
 
-		JMenu game;//menu
+		JMenu game;// menu
 		JMenu view;
 		JMenuItem item;
-	
+
 		/**
-		 * to do
-		 * add code for having other options in the menu
-		 * eg. "Give Up", "Find New Opponent", "Change Username"
+		 * to do add code for having other options in the menu eg. "Give Up",
+		 * "Find New Opponent", "Change Username"
 		 */
 		// build the Game menu
 		game = new JMenu("Game");
 		menuBar.add(game);
-	
-		view = new JMenu("View");		
+
+		view = new JMenu("View");
 		menuBar.add(view);
 
 		item = new JMenuItem("Find New Opponent");
 		item.addActionListener(new newOpponent());
 		game.add(item);
-		
+
 		item = new JMenuItem("Surrender");
 		item.addActionListener(new surrender());
 		game.add(item);
-		
-		//menu options for View
-		item = new JMenuItem("Toggle Enemy Window");	
+
+		// menu options for View
+		item = new JMenuItem("Toggle Enemy Window");
 		item.addActionListener(new toggleEnemy());
 		view.add(item);
-		
+
 		item = new JMenuItem("Toggle Chat Window");
 		view.add(item);
-		
+
 		item = new JMenuItem("Toggle Prep Window");
 		item.addActionListener(new togglePrep());
 		view.add(item);
-		
-		
+
 		return menuBar;
 	}
-	
+
 	public void hitOrMiss(boolean shot, int row, int col) {
 		JTextField tf = fields[row][col];
 		if (shot == true) {
@@ -154,14 +152,17 @@ public class PlayerSkeppWindow {
 	 */
 	public void placeBoat(BoatNew boat) {
 		removeBoatFromBoard(boat.getId());
-		if (boat.getCol() > 0 && boat.getCol() < 7 && boat.getRow() < 7 && boat.getRow() > 0) {
-			if (boat.getPosition() == 'H' && (boat.getCol() + boat.getSize() - 1) < GRID_DIMENSION) {
+		if (boat.getCol() > 0 && boat.getCol() < 7 && boat.getRow() < 7
+				&& boat.getRow() > 0) {
+			if (boat.getPosition() == 'H'
+					&& (boat.getCol() + boat.getSize() - 1) < GRID_DIMENSION) {
 				for (int i = 0; i < boat.getSize(); i++) {
 					JTextField tf = fields[boat.getRow()][boat.getCol() + i];
 					tf.setText("" + boat.getId());
 					tf.setBackground(Color.GRAY);
 				}
-			} else if (boat.getPosition() == 'V' && (boat.getRow() + boat.getSize() - 1) < GRID_DIMENSION) {
+			} else if (boat.getPosition() == 'V'
+					&& (boat.getRow() + boat.getSize() - 1) < GRID_DIMENSION) {
 				for (int i = 0; i < boat.getSize(); i++) {
 					JTextField tf = fields[boat.getRow() + i][boat.getCol()];
 					tf.setText("" + boat.getId());
@@ -177,47 +178,66 @@ public class PlayerSkeppWindow {
 			System.out.println("FEL: inmatad kordinat utanför brädet");
 		}
 	}
-	
-	public static void cleanBoard(){
-		for(int i = 1; i < 7; i++){
-			for(int j = 1; j < 7; j++){
+
+	public static void cleanBoard() {
+		for (int i = 1; i < 7; i++) {
+			for (int j = 1; j < 7; j++) {
 				fields[i][j].setText(" ");
 				fields[i][j].setBackground(Color.WHITE);
 			}
 		}
 	}
-	
-	public static void errorDialog(String message){
-		JOptionPane.showMessageDialog(frame,
-			    message,
-			    "Coordinate Error",
-			    JOptionPane.ERROR_MESSAGE);
+
+	public static boolean checkBoats() {
+		boolean B = false, F = false, E = false;
+		for (int i = 1; i < 7; i++) {
+			for (int j = 1; j < 7; j++) {
+				String s = fields[i][j].getText();
+				if (s.equals("B")) {
+					B = true;
+				} else if (s.equals("F")) {
+					F = true;
+				} else if (s.equals("E")) {
+					E = true;
+				}
+			}
+		}
+		if (B && F && E) {
+			return true;
+		} else {
+			return false;
+		}
 	}
-	
+
+	public static void errorDialog(String message) {
+		JOptionPane.showMessageDialog(frame, message, "Coordinate Error",
+				JOptionPane.ERROR_MESSAGE);
+	}
+
 	private class toggleEnemy implements ActionListener {
 
 		public void actionPerformed(ActionEvent arg0) {
 			EnemySkeppWindow.toggleWindow();
 		}
 	}
-	
+
 	private class togglePrep implements ActionListener {
 
 		public void actionPerformed(ActionEvent arg0) {
 			PrepWindow.toggleWindow();
 		}
 	}
-	
+
 	private class newOpponent implements ActionListener {
 
 		public void actionPerformed(ActionEvent arg0) {
 			GameClient.sendCommand("New");
 			PlayerSkeppWindow.cleanBoard();
 			EnemySkeppWindow.cleanBoard();
-			
+
 		}
 	}
-	
+
 	private class surrender implements ActionListener {
 
 		public void actionPerformed(ActionEvent arg0) {

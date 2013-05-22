@@ -1,5 +1,6 @@
 package gui;
 
+import theGame.GameClient;
 import theGame.GameHandler;
 import theGame.BoatNew;
 import java.awt.*;
@@ -15,6 +16,7 @@ public class PrepWindow {
 	private JTextField cords;
 	private static JFrame frame;
 	private static JButton setBtn;
+	private static JButton rdyBtn;
 
 	public PrepWindow(GameHandler game, PlayerSkeppWindow playerWindow) {
 		this.game = game;
@@ -67,8 +69,11 @@ public class PrepWindow {
 		setBtn = new JButton("Set Boat");
 		setBtn.addActionListener(new setBoatBtn());
 
+		rdyBtn = new JButton("Ready");
+
 		setPanel.add(cords);
 		setPanel.add(setBtn);
+		setPanel.add(rdyBtn);
 
 		JPanel contentPanel = new JPanel(new BorderLayout());
 		contentPanel.add(shipRadio, BorderLayout.LINE_START);
@@ -103,8 +108,10 @@ public class PrepWindow {
 		boolean enabled = setBtn.isEnabled();
 		if (!enabled) {
 			setBtn.setEnabled(true);
+			rdyBtn.setEnabled(true);
 		} else {
 			setBtn.setEnabled(false);
+			rdyBtn.setEnabled(false);
 		}
 	}
 
@@ -168,11 +175,12 @@ public class PrepWindow {
 		return cor;
 	}
 
-	
 	/**
-	 * edit code to create a Boat object and then try to place it through the GameHandler and see if it can be placed
+	 * edit code to create a Boat object and then try to place it through the
+	 * GameHandler and see if it can be placed
+	 * 
 	 * @author Bjarni
-	 *
+	 * 
 	 */
 	private class setBoatBtn implements ActionListener {
 
@@ -195,15 +203,28 @@ public class PrepWindow {
 				size = 2;
 			}
 			int[] cor = parseCords(cords.getText());
-			BoatNew boat = new BoatNew(cor[0],cor[1],align,size,boatCode);
+			BoatNew boat = new BoatNew(cor[0], cor[1], align, size, boatCode);
 			boolean insert = game.setBoat(boat);
-			
-			if(insert){
+
+			if (insert) {
 				playerWindow.placeBoat(boat);
 				cords.setText("");
 			}
 		}
+	}
 
+	private class readyBtn implements ActionListener {
+
+		public void actionPerformed(ActionEvent arg0) {
+			boolean boatsSet = PlayerSkeppWindow.checkBoats();
+			if (boatsSet) {
+				GameClient.sendCommand("Ready");
+				togglePrepPhase();
+			} else {
+				PlayerSkeppWindow
+						.errorDialog("Not all boats are on the board.");
+			}
+		}
 	}
 
 }
