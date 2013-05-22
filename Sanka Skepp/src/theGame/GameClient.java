@@ -79,7 +79,9 @@ public class GameClient {
 
 	public String getShoot() {
 		try {
+			
 			return inStream.readLine();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

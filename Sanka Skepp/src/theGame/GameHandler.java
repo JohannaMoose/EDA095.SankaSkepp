@@ -11,15 +11,6 @@ public class GameHandler {
 		this.client = client;
 	}
 
-	public void startGame() {
-	
-		play();
-	}
-
-	private void play() {
-
-	}
-
 	public boolean checkboat(BoatNew boat) {
 		if (boat.getHits() <= 0) {
 			return true;
@@ -51,6 +42,7 @@ public class GameHandler {
 
 	private String waitForRespons() { // Nytt!!!
 		String coord = client.getShoot();
+		System.out.println("get!");
 		if (coord.equals("Winner") || coord.equals("Loser")
 				|| coord.equals("Draw")) {
 			return coord;

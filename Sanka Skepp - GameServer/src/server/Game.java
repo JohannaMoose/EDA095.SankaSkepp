@@ -37,7 +37,7 @@ public class Game extends Thread {
 	private void playersShoot() throws IOException {
 		String shotP1 = player1.getCommand();
 		String shotP2 = player2.getCommand();
-		
+		System.out.println("Message from clients " + shotP1 + "  "+ shotP2);
 		sendToOponent(shotP1, shotP2);
 	}
 

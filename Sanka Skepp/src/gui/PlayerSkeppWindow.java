@@ -187,27 +187,6 @@ public class PlayerSkeppWindow {
 		}
 	}
 	
-	public static boolean checkBoats(){
-		boolean B = false,F = false,E = false;
-		for(int i = 1; i < 7; i++){
-			for(int j = 1; j < 7; j++){
-				String s = fields[i][j].getText();
-				if(s.equals("B")){
-					B = true;
-				}else if (s.equals("F")){
-					F = true;
-				}else if (s.equals("E")){
-					E = true;
-				}
-			}
-		}
-		if(B && F && E){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	
 	public static void errorDialog(String message){
 		JOptionPane.showMessageDialog(frame,
 			    message,
@@ -235,7 +214,6 @@ public class PlayerSkeppWindow {
 			GameClient.sendCommand("New");
 			PlayerSkeppWindow.cleanBoard();
 			EnemySkeppWindow.cleanBoard();
-			PrepWindow.togglePrepPhase();
 			
 		}
 	}
