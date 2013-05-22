@@ -12,6 +12,7 @@ public class GameController {
 		playersWaiting = new Vector<Player>();
 		idlePlayers = new Vector<Player>();
 		goingGames = new Vector<Game>();
+		System.out.println("Controller up and running");
 	}
 	
 	public synchronized void addNewIdelPlayer(Player newPlayer)

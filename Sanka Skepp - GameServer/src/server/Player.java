@@ -28,7 +28,6 @@ public class Player extends Thread {
 
 	public void run() {
 		System.out.println("Ny spelare");
-		while (true) {
 			while (idle) {
 				try {
 					String command = fromPlayer.readLine();
@@ -41,7 +40,6 @@ public class Player extends Thread {
 					e.printStackTrace();
 				}
 			}
-		}
 	}
 
 	public void setIdle(boolean idle) {

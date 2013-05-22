@@ -6,16 +6,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class Player {
-	private Socket socket; 
-	private OutputStream toPlayer; 
-	private BufferedReader fromPlayer; 
+public class Player extends Thread {
+	private Socket socket;
+	private OutputStream toPlayer;
+	private BufferedReader fromPlayer;
 	private Boolean idle;
 	private GameController controller;
-	
-	public Player(Socket playerSocket, GameController controller)
-	{
-		socket = playerSocket; 
+
+	public Player(Socket playerSocket, GameController controller) {
+		socket = playerSocket;
+		this.controller = controller;
 		try {
 			toPlayer = playerSocket.getOutputStream();
 			fromPlayer = new BufferedReader(new InputStreamReader(
@@ -24,38 +24,44 @@ public class Player {
 			e.printStackTrace();
 		}
 		idle = true;
-		runIdle();
 	}
-	
-	private void runIdle()
-	{
-		while(idle)
+
+	public void run() {
+//		System.out.println("Ny spelare");
+//			while (idle) {
+//				try {
+//					String command = fromPlayer.readLine();
+//
+//					if (command.equals("New")) {
+//						idle = false;
+//						controller.addNewPlayerToPool(this);
+//					}
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+	}
+
+	public void setIdle(boolean idle) {
+		this.idle = idle;
+	}
+
+	public String getCommand() throws IOException {
+		String temp = fromPlayer.readLine();
+		System.out.println("Incoming command " + temp);
+		return temp;
+	}
+
+	public void sendMsgToPlayer(String message) throws IOException {
+		if(!message.endsWith("\r\n"))
 		{
-			try {
-				String command = fromPlayer.readLine();
-				if(command == "New")
-				{
-					idle = false;
-					controller.addNewPlayerToPool(this);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			message = message + "\r\n";
 		}
-	}
-	
-	public String getCommand() throws IOException
-	{
-		return fromPlayer.readLine();
-	}
-	
-	public void sendMsgToPlayer(String message) throws IOException
-	{
 		toPlayer.write(message.getBytes());
+		toPlayer.flush();
 	}
-	
-	public Socket getPlayersSocket()
-	{
+
+	public Socket getPlayersSocket() {
 		return socket;
 	}
 }

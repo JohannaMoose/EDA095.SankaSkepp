@@ -37,30 +37,40 @@ public class Game extends Thread {
 	private void playersShoot() throws IOException {
 		String shotP1 = player1.getCommand();
 		String shotP2 = player2.getCommand();
-		
-		sendToOponent(shotP1, shotP2);
+		if(shotP1 != null && shotP2 != null){
+			System.out.println("Message from clients " + shotP1 + "  "+ shotP2);
+			sendToOponent(shotP1, shotP2);
+		}else 
+		{
+			handleDisconect(shotP1, shotP2);
+		}
 	}
 
 	private void handleResultOfShots() throws IOException {
 		String p1Command = player1.getCommand();
 		String p2Command = player2.getCommand();
 		
-		boolean p1Dead = p1Command.equals("Dead");
-		boolean p2Dead = p2Command.equals("Dead");
+		if(p1Command != null && p2Command != null){
 		
-		if(p1Dead && p2Dead){
-			sendMsgToBoth("Draw");
-			gameEnd = true;
-		}else if (p1Dead){
-			player1.sendMsgToPlayer("Loser");
-			player2.sendMsgToPlayer("Winner");
-			gameEnd = true;
-		}else if (p2Dead){
-			player1.sendMsgToPlayer("Winner");
-			player2.sendMsgToPlayer("Loser");
-			gameEnd = true;
-		} else {
-			sendToOponent(p1Command, p2Command);
+			boolean p1Dead = p1Command.equals("Dead");
+			boolean p2Dead = p2Command.equals("Dead");
+			
+			if(p1Dead && p2Dead){
+				sendMsgToBoth("Draw");
+				gameEnd = true;
+			}else if (p1Dead){
+				player1.sendMsgToPlayer("Loser");
+				player2.sendMsgToPlayer("Winner");
+				gameEnd = true;
+			}else if (p2Dead){
+				player1.sendMsgToPlayer("Winner");
+				player2.sendMsgToPlayer("Loser");
+				gameEnd = true;
+			} else {
+				sendToOponent(p1Command, p2Command);
+			}
+		}else {
+			handleDisconect(p1Command, p2Command);
 		}
 	}
 
@@ -73,6 +83,26 @@ public class Game extends Thread {
 	{
 		player1.sendMsgToPlayer(msg);
 		player2.sendMsgToPlayer(msg);
+	}
+	
+	private void handleDisconect(String fromPlayer1, String fromPlayer2) throws IOException
+	{
+		if(fromPlayer1 == null && fromPlayer2 != null)
+		{
+			controller.disconnectPlayer(player1);
+			player2.sendMsgToPlayer("Winner");
+			gameEnd = true;
+		}else if(fromPlayer2 == null && fromPlayer1 != null)
+		{
+			controller.disconnectPlayer(player2);
+			player1.sendMsgToPlayer("Winner");
+			gameEnd = true;
+		}else if(fromPlayer1 == null && fromPlayer2 == null)
+		{
+			controller.disconnectPlayer(player1);
+			controller.disconnectPlayer(player2);
+			gameEnd = true;
+		}
 	}
 	
 	public Player getPlayer1()
